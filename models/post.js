@@ -90,6 +90,7 @@ Post.get =function(id,callback){
                 if(err){
                     return callback(err);//失败返回 err信息
                 }
+                //使用markdown 进行转换
                 docs.forEach(function(doc){
                     doc.post = markdown.toHTML(doc.post);
                 });
