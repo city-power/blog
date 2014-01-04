@@ -1,5 +1,7 @@
 var mongodb = require('./db');
 var uuid = require('node-uuid');
+var markdown = require('markdown').markdown;
+
 
 function Post(name,title,post){
     this.name=name;
@@ -21,7 +23,13 @@ Post.prototype.save = function(callback){
         minute:date.getFullYear()+":"+(date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes())
     }
 
-    //要存入数据的文档
+    //node-uuid
+    //https://github.com/broofa/node-uuid
+    //// Generate a v1 (time-based) id
+    //uuid.v1(); // -> '6c84fb90-12c4-11e1-840d-7b25c5ee775a'
+    // Generate a v4 (random) id
+    //uuid.v4(); // -> '110ec58a-a0f2-4ac4-8393-c866d813b8d1'
+    ////要存入数据的文档
     var post = {
         id:uuid.v1(),
         name:this.name,
@@ -82,6 +90,9 @@ Post.get =function(id,callback){
                 if(err){
                     return callback(err);//失败返回 err信息
                 }
+                docs.forEach(function(doc){
+                    doc.post = markdown.toHTML(doc.post);
+                });
                 callback(null,docs);//成功!已数组形式返回查询的结果
             });
         });
