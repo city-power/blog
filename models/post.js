@@ -18,10 +18,14 @@ Post.prototype.save = function(callback){
     var time = {
         date:date,
         year:date.getFullYear(),
-        month:date.getFullYear()+"-"+(date.getMonth()+1),
-        day:date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate(),
-        minute:date.getFullYear()+":"+(date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes())
+        month:(date.getMonth()+1),
+        day:date.getDate(),
+        minute:(date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes()),
+        hour:date.getHours(),
+        sec:date.getSeconds()
     }
+    //组装
+    time.full=time.year+"-"+time.month+"-"+time.day+" "+time.hour+":"+time.minute+":"+time.sec;
 
     //node-uuid
     //https://github.com/broofa/node-uuid
