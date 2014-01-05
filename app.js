@@ -23,7 +23,12 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 //app.use(express.json());
 //app.use(express.urlencoded());
-app.use(express.bodyParser());
+//
+//保留上传文件的后缀名，并把上传目录设置为 /public/images 
+app.use(express.bodyParser({
+    keepExtensions:true,uploadDir:'./public/images'
+}));
+
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({
