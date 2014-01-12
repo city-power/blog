@@ -184,7 +184,7 @@ app.post('/upload',function(req,res){
     for(var i in req.files){
         if(req.files[i].size==0){
             //使用同步方式删除一个文件
-            fs.unlinkSync(req,files[i].path);
+            fs.unlinkSync(req.files[i].path);
             console.log('Successfully removed an empty uploadfile!');
         }else{
             var target_path='./public/images/'+req.files[i].name;
