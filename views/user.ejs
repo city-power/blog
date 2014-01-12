@@ -1,11 +1,11 @@
 <%- include header %>
-<% posts.forEach(function (post,index){ %>
-<p>
-<h2><a href="/u/<%= post.name%>/<%= post.time.day%>/<%= post.title%>"><%= post.title%></a></h2>
-</p>
+    <% posts.forEach(function (post,index){%>
+    <p>
+        <h2><a href="/u/<%= post.name%>/<%= post.time.day%>/<%= post.title%>"><%= post.title%></a></h2>
+    </p>
 <p class="info">
     作者:<a href="/u/<%=post.name%>"><%= post.name%></a></p>
-日期:<%= post.time.full%>
+    日期:<%= post.time.full%>
 <p><%- post.post%></p>
 <% if(user&&user.name==post.name){%>
 <p>
@@ -15,5 +15,5 @@
 </form>
 </p>
 <%}%>
-<% }) %>
+<%})%>
 <%- include footer%>

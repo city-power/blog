@@ -69,7 +69,7 @@ Post.prototype.save = function(callback){
 };
 
 //读取文章及其相关信息
-Post.get =function(id,callback){
+Post.getAll =function(name,callback){
     //打开数据库
     mongodb.open(function(err,db){
         if(err){
@@ -82,10 +82,9 @@ Post.get =function(id,callback){
                 return callback(err);
             }
             var query = {};
-            if(id){
-                query.id = id;
+            if(name){
+                query.name = name;
             }
-
             //根据jquery对象查询文章
             collection.find(query).sort({
                 time:-1
@@ -103,6 +102,9 @@ Post.get =function(id,callback){
         });
     });
 };
+
+
+
 
 //删除指定文章 
 Post.remove=function(id,user,callback){
@@ -141,6 +143,40 @@ Post.remove=function(id,user,callback){
                return callback(result);//删除成功
             });
       
+        });
+    });
+};
+
+
+Post.getOne = function(name,day,title,callback){
+    //打开数据库
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(null);
+        }
+        //读取 posts集合
+        db.collection("posts",function(err,connection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+
+            //根据用户名、发表日期以及文章名进行查询
+            connection.findOne({
+                "name":name,
+                "time.day":parseInt(day),
+                "title":title
+            },function(err,doc){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                //解析markdown 为html
+                if(doc){
+                    doc.post = markdown.toHTML(doc.post);
+                }
+                callback(null,doc);//返回查询的一篇文章
+            });
         });
     });
 };

@@ -1,0 +1,15 @@
+<%- include header %>
+<p class="info">
+    作者:<a href="/u/<%= post.name%>"><%= post.name%></a>
+    日期:<%= post.time.minute%>
+<p><%- post.post%></p>
+<% if(user&&user.name==post.name){%>
+<p>
+<form action="/remove" method="post">
+
+    <button name="id" value="<%=post.id%>">删除</button>
+</form>
+</p>
+<%}%>
+</p>     
+<%- include footer%>
