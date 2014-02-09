@@ -234,7 +234,25 @@ app.get("/u/:name",function(req,res){
          });
      });
  });
+//获取待编辑的文章
+  app.get('/edit/:name/:day/:title',checkLogin);
+  app.get('/edit/:name/:day/:title',function(req,res){
+      var currentUser = req.session.user;
+      Post.edit(currentUser.name,req.params.day,req.params.title,function(err,post){
+          if(err){
+              req.flash('error',err);
+              return res.redirect('back');
+          }
 
+          res.render('edit',{
+              title:'编辑',
+              post:post,
+              user:req.session.user,
+              success:req.flash('success').toString(),
+              error:req.flash("error").toString()
+          });
+      });
+  });
     app.get('/logout',function(req,res){
         req.session.user = null;
         req.flash('success','您已安全退出!');
