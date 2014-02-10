@@ -201,7 +201,41 @@ Post.edit = function(name,day,title,callback){
                 "title":title
             },function(err,doc){
                 mongodb.close();
-                return callback(null,doc);//返回查询到的文章。
+                if(err){
+                    return callback(err);
+                }
+                callback(null,doc);//返回查询到的文章。
+            });
+        });
+    });
+};
+
+//执行更新
+Post.update = function(name,day,title,post,callback){
+    //打开数据库
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        //读取posts集合
+        db.collection('posts',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            //更新文章内容
+            collection.update({
+                "name":name,
+                "time.day":parseInt(day),
+                "title":title
+            },{
+                $set:{ post:post}
+            },function(err){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null);
             });
         });
     });

@@ -258,7 +258,24 @@ app.get("/u/:name",function(req,res){
         req.flash('success','您已安全退出!');
         res.redirect('/');//退出后跳转到首页
     });
-}
+    //编辑操作
+app.post('/edit/:name/:day/:title',checkLogin);
+app.post('/edit/:name/:day/:title',function(req,res){
+    console.log("进入方法了");
+    var currentUser = req.session.user;
+    Post.update(currentUser.name,req.params.day,req.params.title,req.body.post,function(err){
+        var url = '/u/'+req.params.name+'/'+req.params.day+'/'+req.params.title;
+        if(err){
+            req.flash('error',err);
+            return res.redirect(url);//出错返回文章页
+        }
+        req.flash('success','修改成功!');
+        res.redirect(url);//修改成功返回文章页
+
+    });
+});
+};
+
 
 //检查用户是否登陆
 function checkLogin(req,res,next){
