@@ -3,5 +3,5 @@
 本人wiki https://github.com/city-power/blog/wiki <br />
 
 2014 01月05日更新 使用markdown进行转换<br/>
-2014 02月10日更新 对文章进行编辑
+2014 02月10日更新 对文章进行编辑<br/>
 2014 02月13日更新 对文章进行删除
