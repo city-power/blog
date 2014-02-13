@@ -134,28 +134,14 @@ module.exports = function(app){
         });
     });
 
-    app.post('/remove',checkLogin);
+    app.get('/remove/:name/:day/:title',checkLogin);
     //删除指定文章
-    app.post('/remove',function(req,res){
+    app.get('/remove/:name/:day/:title',function(req,res){
         var currentUser =req.session.user;
         var id = req.body.id;
-         Post.getAll(id,function(err,post){
+            Post.remove(currentUser.name,req.params.day,req.params.title,function(err){
              if(err){
-                 req.flash('error',err);
-                return  res.redirect('/');
-            }
-         
-            if(post.length==0){
-                 req.flash('error','该文章不存在!');
-                return  res.redirect('/');
-            }
-            if(currentUser.name!=post[0].name){
-                req.flash('error','您没有权限删除改文章!');
-                return  res.redirect('/');
-            }
-            Post.remove(id,currentUser,function(result){
-             if(!result.success){
-                req.flash('error',result.message);
+                req.flash('error',err);
                 return res.redirect('/');//异常返回首页
             }
             req.flash('success','删除成功!');
@@ -163,7 +149,6 @@ module.exports = function(app){
         });
     });
         
-    });
 
 //文件上传页
 //限制登陆用户

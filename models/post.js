@@ -107,7 +107,7 @@ Post.getAll =function(name,callback){
 
 
 //删除指定文章 
-Post.remove=function(id,user,callback){
+Post.remove=function(name,day,title,callback){
    
     //打开数据库连接
     mongodb.open(function(err,db){
@@ -119,28 +119,21 @@ Post.remove=function(id,user,callback){
                 mongodb.close();
                 return callback(err);
             }
+            var post = {
+                "name":name,
+                "time.day":parseInt(day),
+                "title":title
+            };
 
-            var post = {};
-            if(id){
-                post.id=id;
-                post.name = user.name;
-            }
         collection.remove(post,{
-                safe:true
-            },function(err,result){
+              w:1
+            },function(err){
                mongodb.close();
-               result={};
-
                if(err){
-                 result={
-                    success:false,
-                    message:err
-                 }
-                 return callback(result);
+                 return callback(err);
               }
             //返回结果
-                result.success = true;
-               return callback(result);//删除成功
+                callback(null);//删除成功
             });
       
         });
